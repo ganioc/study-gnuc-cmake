@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "*.md": "markdown",
+        "ostream": "cpp",
+        "limits": "cpp",
+        "string_view": "cpp",
+        "assert": "cpp"
+    }
+}
