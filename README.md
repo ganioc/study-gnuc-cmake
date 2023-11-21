@@ -260,5 +260,87 @@ Unix filesystem
 Unix process APIs
 Unix signal APIs
 
+System V ABI, 包括
+* The register layout
+* The stack frame
+* function prologs and epilogs
+>function 执行在代码运行前和运行后执行的代码,如setting up a stack frame, saving current state of CPU registers, allocating space for local variables. 准备函数执行时的环境变量。cleanup, 恢复cpu寄存器状态，释放本地变量，执行被中断的任务。
+* The calling convention , parameters passing
+* exception handling
+* virutal memory layout
+* Debugging
+* binary object format, ELF
+* program loading and linking
+
+Intel 64-bit, AMD64, 
+rip, a program's current location in executable memroy,
+rsp, stack pointer
+rbp, base pointer, 定义栈的位置
+rax,rbx,rcx,rdx, 
+rdi,rsi,
+r8,r9,r10,... r15,
+floating point register
+wide register, to speed up calculations, SSE, aVX,
+
+stack frame:
+grows down, 每一个frame都代表一个函数调用, funciton call, first 6 arguments are passed as registers. 返回地址push进stack。
+Memory after the return address属于函数调用使用的参数。stack-based variables. 每次函数返回时, stack shrinks. 
+操作系统负责管理栈的大小，
+call
+ret, pop the return address from the stack, and jump to the address popped.
+
+red zone. only applies to leaf function (does not call any other fucntion)
+red zone 必须被关掉，如果有中断的话, gcc, -mno-red-zone flag
+
+**calling convention**
+调用规则
+那些寄存器是易失的，那些是non-volatile的，哪些使用寄存器来传递参数，用什么次序，那些寄存器用来存放返回值。
+
+non-volatile register,
+Is restored to its original value, 在function leave之前, in eiplog,
+System V ABI定义了rbx, rbp, r12, r13, r14, r15,
+volatile register,
+可以随意使用, 不介意寄存器值的改变,
+%rdx, 存放第3个参数,
+看起来rbx, rbp是存放前2个参数吧,
+
+System V's calling convention 传递参数的顺序:
+rdi, rsi, rdx, rcx, r8, r9,
+
+edi, esi存放两个输入的参数， 将结果放在eax寄存器里返回，多个参数的话，再增加rdx,
+
+e 表示32位寄存器
+r 表示64位寄存器
+
+**Exception Handling, debugging**
+异常处理和debugging,
+
+C++异常处理比较耗费时间，不要在控制逻辑里使用。
+-fno-exceptions flag, 如果不想使用C++ exceptions的话,
+
+DWARF specification,
+.eh_frame table, embedded in the application itself.
+绝大多数的Unix based applications 都会编译成二进制 ELF格式,
+ELF应用支持C++ exception support的，都会包含一个特殊的表，叫做.eh_frame表格，这个就是exception handling framework, 异常处理框架,
+
+DWARF还定义了指令，可以reverse the stack. 反向执行指令，修改non-volatile寄存器的内容,
+readelf --debug-dump=frames a.out
+FDE, (Frame Description Entry),
+DWARF instructions, compressed instructions designed to be as small as possible, to reduce the size of .eh_frame table,
+
+**Virtual memory layout**
+虚拟内存的布局, 这个也是System V specification规定的,
+
+
+**ELF** file standard,
+Executable and Linkable Format, 0x7F hex number, continues with the ELF string.
+hexdump -C a.out
+一个ELF64文件可以view as segments or sections,
+sections,
+sections 组成segments,
+section如何load 加载, 有些是read-write, 有些是read-execute,read-write-execute,
+
+**ELF sections**
+readelf -SW aaa
 
 

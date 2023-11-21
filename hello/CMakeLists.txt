@@ -18,3 +18,8 @@ include_directories(../libs/GSL/include)
 
 add_executable(hello ${SRCS})
 
+add_executable(multargs ./multargs.cpp)
+
+add_executable(excp ./excp.cpp)
+
+
