@@ -343,4 +343,51 @@ section如何load 加载, 有些是read-write, 有些是read-execute,read-write-
 **ELF sections**
 readelf -SW aaa
 
+## Unix Processes
+Unix进程, 
+
+fork(),
+一个简单的系统调用，生成一个duplicate child version of the process. 包括打开的文件操作符，内存等。区别在子进程有一个新的进程ID,
+
+wait(),
+等待子进程结束,
+
+IPC,
+进程间通讯, Interprocess Communication
+synchronization,
+deadlock
+race conditions,
+* Unix pipes
+>a pipe is a file in RAM, one process can write to, and the other can read from.
+* Unix shared memory
+>共享内存, a buffer read, written by both processes.
+
+ftok(filename, id),获取一个id作为key,
+shmget(key,size, param)
+
+exec()
+fork() will be followed by exec 来覆盖existing process成为一个新的进程。
+execl(), 绝对路径
+execlp, PATH environment, 使用了环境变量,
+execv(), 可以定义argv[]作为一个独立的变量,
+execvp(),使用PATH环境变量,
+
+system()
+合格等于fork(), exec(),
+
+**输出重定向**
+捕获进程的输出。我们可以制造一个Unix pipe, 告诉子进程将它的输出通过pipe重定向给父进程。
+dup2(), 
+
+**unix signals**
+捕捉Ctrl+C command,
+signal(NUM, handler)
+deadlock, corruption, race conditions, 使用signal handler时,
+kill(id, SIGNAL), 对id发送信号,
+
+## Program Console 对终端的I/O进行编程
+
+
+
+
 

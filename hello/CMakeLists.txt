@@ -22,4 +22,16 @@ add_executable(multargs ./multargs.cpp)
 
 add_executable(excp ./excp.cpp)
 
+add_executable(process ./process.cpp)
 
+add_executable(ipc ./ipc.cpp)
+
+add_executable(ipcpipe ./ipcpipe.cpp)
+
+add_executable(ipcshm ./ipcshm.cpp)
+
+add_executable(ipcexec ./ipcexec.cpp)
+
+add_executable(ipcredir ./ipcredir.cpp)
+
+add_executable(ipcsig ./ipcsig.cpp)
