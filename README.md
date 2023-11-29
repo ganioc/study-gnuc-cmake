@@ -3,7 +3,8 @@
 Books
 * Modern CMake for C++
 * "Hands-on System Programming with C++"
-* 
+* "C++ Data Structures and Algorithms"
+* "C++ Reactive Programming"
 
 template programming, 让编译器来生成代码, type-safe, 优越性，容易维护。
 
@@ -386,8 +387,77 @@ deadlock, corruption, race conditions, 使用signal handler时,
 kill(id, SIGNAL), 对id发送信号,
 
 ## Program Console 对终端的I/O进行编程
+获取用户输入，提供输出，支持debug和diagnostics. C里面的printf()/scanf() IO functions. 
+C++提供stream-based IO, 与C-style相比的话。
 
+stream-based IO
+优点：
+* preferred over the standard C functions, 
+* 可以处理user-defined 类型，提供更清晰，type-safe IO
+* 更加安全，accidental-buffer overflow vulnerabilities,
+* 提供implicit memory managemnt, 内存管理, 不需要variadic functions,
 
+缺点:
+* 性能较差
+* Format specifiers 更加灵活，比<iomanip>
+
+用户定义的类型重载<<,>>,可以提供定制的，类型安全的IO,
+输入的buffer大于space allocated, 造成buffer overflow situation,
+
+```cpp
+scanf("%2s", buf);
+```
+或者用模版来输入buffer的size, 
+或者使用std::string, 会动态分配内存，从而避免buffer overflow.
+    std::bad_alloc, 抛出, program aborts,
+
+endl; 会flush the buffer,
+"\n", 则不会,
+
+```cpp
+#define NDEBUG
+#define DEBUG(...) fprintf(stdout, __VA_ARGS__);
+#else
+#endif
+```
+第二种是定义一个debug level, 允许developer dial in how verbose the program is while debugging.
+
+NDEBUG: 
+在Release mode, 这个会被定义。a macro, assert(), 
+这是一个标准的宏定义,Not Debug, c89, c99, 
+
+constexpr auto g_ndebug = true;
+debug level , is a compile-time feature in this example.
+```cpp
+-DDEBUG_LEVEL=xxxx,
+```
+将C的宏定义为C++的constexpr, 
+
+第三种是包含当前的文件名，和代码的行号,
+
+为了提高性能可以使用 std::stringstream,
+
+manipulator
+std::boolalpha, 
+std::noboolalpha, true, false, 1,0
+std::dec,
+std::oct,
+std::uppercase
+std::showbase
+std::noshowbase,
+reinterpret_cast<unitprt_t>（&i）
+
+std::setw()
+std::setfill()
+
+C++ GSL span?
+a sequence of continuous objects.
+C++ Core Guideline compliant,
+
+```cpp
+ensure_z()
+
+```
 
 
 

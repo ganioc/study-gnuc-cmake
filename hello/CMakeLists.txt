@@ -35,3 +35,5 @@ add_executable(ipcexec ./ipcexec.cpp)
 add_executable(ipcredir ./ipcredir.cpp)
 
 add_executable(ipcsig ./ipcsig.cpp)
+
+add_executable(ioterm ./ioterm.cpp)
