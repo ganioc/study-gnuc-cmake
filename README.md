@@ -459,5 +459,101 @@ ensure_z()
 
 ```
 
+## Look at Memory Management
+如何实现安全的C++方式的内存管理, memory management. 遵循C++ Core Guidelines , safety issues, 如何使用智能指针, smart pointers,影响了C++核心指导规范. 
+如何进行内存映射和权限管理.
+
+使用new(), delete(), 而不是malloc(), free(),
+
+内存，
+* Global memory
+* Stack memory, bound to the scope it was created, 当超出时，程序只会crash,
+* Heap memory， slow头allocate， be quite large, new(), delete(),
+
+全局内存存在于2个不同的区域:
+* .bss, zero-initialized, memory
+* .data, value initialized memory,
+
+## Aligning memory
+对齐内存,
+0xFFFFFF000, 12 bit, which means 4kb aligned.
+alignas(),
+posix_memalign() API, < C++ 17
+aligned_alloc(), 比较新的函数，
+
+**nothrow**
+new,delete操作符允许throw exceptions.如果内存分配失败的话，new操作符会抛出一个异常std::bad_alloc, 而不是返回nullptr, 在某些场景下，在系统编程里,我们不希望抛出异常。
+```cpp
+auto ptr = new(std::nothrow) int;
+myclass(){
+    throw std::runtime_error("the answer was wrong");
+}
+char buf[0x1000]；
+auto ptr1 = new(buf) int;
+```
+
+new也可以在已存在的，用户控制的buffer,缓冲里分配内存.
+
+**overloading重载**
+重载对象的new operator, 操作符,
+Debugging 和统计是进行重载new(), delete()的原因。
+::operator delete()
+::operator new()
+意思是global operator,
+ 
+ **使用智能指针**
+ std::unique_ptr{} pointer,
+ C++ 11 引入了指针的所有权必须确认机制。unique_ptr, 必须被一个实体拥有,拷贝指针是禁止的，指针释放是由C++自动执行的，使用dealloc机制。在对象释放的时候。
+
+ std::shared_ptr{} , 可以被一个或多个实体拥有。允许拷贝指针，当所有的实体释放时，才会dealloc，释放对象，指针。
+ 比如thread#1生成一个指针，thread#2使用从#1获得的指针。
+
+ ```cpp
+ auto ptr=make_unique<int>(42)
+ auto ptr = make_shared<int>(42)
+ make_unique<int[]>(42)
+ ```
+ C++不建议用下标来访问数组，而是通过gsl::span()来进行访问
+ ptr.get(), 来访问
+ptr.get_count()
+
+weak_ptr{}, 不会增加计数,
+shared_ptr<>s = move(ptr), 将unique转为shared,
+
+**mmap**
+POSIX style来分配内存,
+mmap(0,size,...)
+munmap(ptr, size)
+mprotect(), 修改分配的内存的权限。
+
+#include <sys/mman.h>
+mmap将其它地方的内存、文件映射到程序的空间里。
+可以将这部分内存和其它应用分享，for interprocess communication.
+
+优点:
+* Fragmentation, 分段,MAP_ANONYMOUS通常会映射内存page size的整数倍。或2^m 整倍数。
+* 权限, 读、写、执行
+* shared memory, 共享内存,
+
+缺陷:
+* Performance, 性能，C库会调用OS,使用brk(), or mmap()来分配更多的内存。使用后，C库会释放。mmap()会慢一些
+* Granularity,mmap最少分配一个页面,哪怕你只分配几个字节,
+
+mmap的智能指针
+mmap和munmap也会suffer from issues as malloc/free,
+
+贡献内存,shared memory,
+
+内存碎片化。
+broken into chunks. 
+- external fragmentation
+- internal fragmentation,
+
+# File I/O
+文件的输入、输出。
+
+
+
+
 
 

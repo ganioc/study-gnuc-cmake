@@ -32,3 +32,5 @@ include_directories(${CMAKE_BINARY_DIR}/include)
 
 add_executable(example1 example1.cpp)
 add_dependencies(example1 gsl)
+
+add_executable(mem mem.cpp)
