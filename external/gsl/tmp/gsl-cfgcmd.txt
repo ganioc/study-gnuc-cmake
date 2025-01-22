@@ -1,0 +1,1 @@
+cmd='/usr/bin/cmake;-DGSL_TEST=ON;-DCMAKE_INSTALL_PREFIX=/home/yango/prj/study-gnuc-cmake;-GUnix Makefiles;<SOURCE_DIR><SOURCE_SUBDIR>'

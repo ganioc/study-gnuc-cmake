@@ -1,4 +1,9 @@
 *~
 build/
 libs/GSL/
+CMakeFiles
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+*.o
 
